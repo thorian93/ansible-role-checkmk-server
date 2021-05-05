@@ -1,0 +1,38 @@
+---
+galaxy_info:
+  author: CaffeineCollective
+  description: Ansible Role Checkmk Server
+  license: "license (MIT)"
+
+  min_ansible_version: 2.9
+
+  galaxy_tags:
+    - linux
+    - server
+    - monitoring
+    - checkmk
+    - infrastructure
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 8
+    - name: Debian
+      versions:
+        - Stretch
+        - Buster
+    - name: Fedora
+      versions:
+        - 30
+        - 31
+        - 32
+    - name: opensuse
+      versions:
+        - 15.2
+        - 42.2
+    - name: Ubuntu
+      versions:
+        - Xenial
+        - Bionic
+        - Focal
