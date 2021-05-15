@@ -1,0 +1,6 @@
+---
+- name: "Install Checkmk Server."
+  ansible.builtin.yum:
+    name: "/tmp/{{ checkmk_setup_file }}"
+    update_cache: 'yes'
+    state: present

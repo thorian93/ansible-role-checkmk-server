@@ -1,1 +1,5 @@
 ---
+checkmk_setup_file: "check-mk-{{ checkmk_edition }}-{{ checkmk_version }}_0.{{ ansible_distribution_release }}_amd64.deb"
+checkmk_download_url: "{{ checkmk_base_url }}/{{ checkmk_version }}/{{ checkmk_setup_file }}"
+
+checkmk_prerequisites: []
