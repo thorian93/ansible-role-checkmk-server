@@ -1,0 +1,49 @@
+# {{  ansible_managed  }}
+<VirtualHost *:80>
+ ServerName "{{ checkmk_external_url }}"
+ ServerAlias "{{ checkmk_external_url }}"
+ ServerSignature Off
+
+{% if checkmk_redirect_http_to_https | bool %}
+ RewriteEngine On
+ RewriteCond %{SERVER_PORT} !^443$
+ RewriteRule (.*) https://%{HTTP_HOST}/$1 [L]
+ RequestHeader set X-Forwarded-Proto "https"
+{% endif %}
+</VirtualHost>
+
+<VirtualHost *:443>
+ ServerName "{{ checkmk_external_url }}"
+ ServerAlias "{{ checkmk_external_url }}"
+ ServerSignature Off
+
+ SSLEngine on
+ SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+ SSLHonorCipherOrder on
+ SSLCipherSuite "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
+ SSLCompression Off
+ # Not suported yet: SSLSessionTickets Off
+{% if checkmk_create_self_signed_cert | bool %}
+ SSLCertificateFile "{{ checkmk_self_signed_certificate }}"
+ SSLCertificateKeyFile "{{ checkmk_self_signed_certificate_key }}"
+{% elif checkmk_custom_cert | bool %}
+ SSLCertificateFile "{{ checkmk_custom_cert_file }}"
+ SSLCertificateKeyFile "{{ checkmk_custom_cert_key }}"
+{% else %}
+ SSLCertificateFile "{{ checkmk_certificate }}"
+ SSLCertificateKeyFile "{{ checkmk_certificate_key }}"
+ SSLCACertificateFile "{{ checkmk_certificate_chain }}"
+{% endif %}
+
+ # Use HSTS:
+ <IfModule mod_headers.c>
+   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+ </IfModule>
+
+ LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b" common_forwarded
+ ErrorLog /var/log/{{ apache2_http_name }}/checkmk_error.log
+ CustomLog /var/log/{{ apache2_http_name }}/checkmk_forwarded.log common_forwarded
+ CustomLog /var/log/{{ apache2_http_name }}/checkmk_access.log combined env=!dontlog
+ CustomLog /var/log/{{ apache2_http_name }}/checkmk.log combined
+
+</VirtualHost>

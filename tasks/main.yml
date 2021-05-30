@@ -65,3 +65,33 @@
   no_log: 'true'
   loop: "{{ checkmk_sites }}"
   when: item.state != "absent"
+
+- name: "Create self-signed Certificate."
+  command: 'openssl req -new -nodes -x509 -subj "{{ checkmk_self_signed_cert_subj }}" -days 365 -keyout {{ checkmk_self_signed_certificate_key }} -out {{ checkmk_self_signed_certificate }} -extensions v3_ca'
+  args:
+    creates: "{{ checkmk_self_signed_certificate }}"
+  when: checkmk_create_self_signed_cert | bool
+
+- name: "Enable Apache2 SSL Module."
+  apache2_module:
+    name: ssl
+    state: present
+  notify: restart webserver
+
+- name: "Copy Checkmk Configuration File for Apache2."
+  template:
+    src: checkmk.conf.j2
+    dest: "{{ apache2_http_site_dir }}/checkmk.conf"
+    owner: root
+    group: root
+    mode: '0600'
+    backup: 'yes'
+    force: 'yes'
+  notify: reload webserver
+
+- name: "Enable Checkmk Configuration."
+  command: a2ensite checkmk.conf
+  args:
+    creates: "/etc/apache2/sites-enabled/checkmk.conf"
+  notify: reload webserver
+  when: ansible_os_family == "Debian"

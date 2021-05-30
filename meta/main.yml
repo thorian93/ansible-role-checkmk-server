@@ -37,3 +37,7 @@ galaxy_info:
         - Xenial
         - Bionic
         - Focal
+
+dependencies:
+  - name: thorian93.apache2
+    version: master

@@ -13,6 +13,22 @@ checkmk_edition: raw
 checkmk_version: 2.0.0p5
 checkmk_base_url: "https://download.checkmk.com/checkmk"
 
+checkmk_external_url: "{{ inventory_hostname }}"
+checkmk_redirect_http_to_https: 'true'
+
+checkmk_create_self_signed_cert: 'true'
+checkmk_self_signed_cert_subj: "/C=DE/ST=NRW/L=Cologne/O=Org/CN={{ checkmk_external_url }}"
+checkmk_self_signed_certificate_key: "/etc/apache2/ssl/checkmk.key"
+checkmk_self_signed_certificate: "/etc/apache2/ssl/checkmk.crt"
+
+checkmk_custom_cert: 'false'
+checkmk_custom_cert_file: /etc/{{ apache2_http_name }}/ssl/checkmk.crt
+checkmk_custom_cert_key: /etc/{{ apache2_http_name }}/ssl/checkmk.key
+
+checkmk_certificate_key: "{{ certbot_cert_path }}/privkey.pem"
+checkmk_certificate: "{{ certbot_cert_path }}/cert.pem"
+checkmk_certificate_chain: "{{ certbot_cert_path }}/fullchain.pem"
+
 checkmk_sites:
   - name: main
     state: started
