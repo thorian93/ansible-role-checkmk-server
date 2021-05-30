@@ -10,15 +10,19 @@ checkmk_server_stable_os:
   - Ubuntu 20
 
 checkmk_edition: raw
-checkmk_version: 2.0.0p4
+checkmk_version: 2.0.0p5
 checkmk_base_url: "https://download.checkmk.com/checkmk"
 
 checkmk_sites:
   - name: main
     state: started
+    admin_pw: admin
   - name: slave1
     state: present
+    admin_pw: admin
   - name: slave2
     state: stopped
+    admin_pw: admin
   - name: slave3
     state: absent
+    admin_pw: admin

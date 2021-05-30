@@ -55,3 +55,8 @@
   when: item.state == "absent"
   loop: "{{ checkmk_sites }}"
   register: checkmk_sites_removed
+
+- name: "Update Site Admin Password."
+  ansible.builtin.shell: "echo '{{ item.admin_pw }}' | htpasswd -i /omd/sites/{{ item.name }}/etc/htpasswd cmkadmin"
+  loop: "{{ checkmk_sites }}"
+  when: item.state != "absent"
