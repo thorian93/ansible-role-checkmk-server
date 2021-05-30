@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: checkmk_server
   author: CaffeineCollective
   description: Ansible Role Checkmk Server
   license: "license (MIT)"
