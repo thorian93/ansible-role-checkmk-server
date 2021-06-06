@@ -1,1 +1,7 @@
 ---
+
+#https://download.checkmk.com/checkmk/2.0.0p4/check-mk-raw-2.0.0p4-sles15sp2-38.x86_64.rpm
+#https://download.checkmk.com/checkmk/2.0.0p4/check-mk-raw-2.0.0p4-sles15-38.x86_64.rpm
+
+checkmk_prerequisites:
+  - freeipmi

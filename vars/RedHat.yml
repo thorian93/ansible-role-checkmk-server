@@ -2,4 +2,6 @@
 checkmk_setup_file: "check-mk-{{ checkmk_edition }}-{{ checkmk_version }}-el{{ ansible_distribution_major_version }}-38.x86_64.rpm"
 checkmk_download_url: "{{ checkmk_base_url }}/{{ checkmk_version }}/{{ checkmk_setup_file }}"
 
-checkmk_prerequisites: epel-release
+checkmk_prerequisites:
+  - epel-release
+  - freeipmi
