@@ -1,4 +1,18 @@
 ---
+- name: "Add Checkmk GPG Key."
+  ansible.builtin.apt_key:
+    id: 434DAC48C4503261
+    url: https://download.checkmk.com/checkmk/Check_MK-pubkey.gpg
+    state: present
+  when: checkmk_verify_setup | bool
+
+- name: "Verify Checkmk Setup."
+  command: dpkg-sig --verify "/tmp/{{ checkmk_setup_file }}"
+  args:
+    chdir: /tmp/
+  register: checkmk_setup_verify
+  when: checkmk_verify_setup | bool
+
 - name: "Install Checkmk Server."
   ansible.builtin.apt:
     deb: "/tmp/{{ checkmk_setup_file }}"
