@@ -9,17 +9,17 @@
 - name: "Include OS Family specific Variables."
   include_vars: "{{ ansible_os_family }}.yml"
 
-- name: "Download Checkmk Server Setup."
-  ansible.builtin.get_url:
-    url: "{{ checkmk_download_url }}"
-    dest: "/tmp/{{ checkmk_setup_file }}"
-
 - name: "Install Checkmk Prerequisites."
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:
     - "{{ checkmk_prerequisites}}"
+
+- name: "Download Checkmk Server Setup."
+  ansible.builtin.get_url:
+    url: "{{ checkmk_download_url }}"
+    dest: "/tmp/{{ checkmk_setup_file }}"
 
 - name: Include OS Family specific Playbook.
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
