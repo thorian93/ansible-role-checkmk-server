@@ -1,3 +1,8 @@
+# This repository is deprecated!
+Use https://github.com/tribe29/ansible-collection-tribe29.checkmk/ instead!
+
+---
+
 # Ansible Role: Checkmk Server
 
  This role sets up the Checkmk Server on Debian/Ubuntu, RHEL/CentOS and Fedora servers. 
